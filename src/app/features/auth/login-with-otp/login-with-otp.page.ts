@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { IonButton, IonInputOtp, IonIcon, NavController, IonText } from '@ionic/angular/standalone';
+import { IonButton, IonInputOtp, IonIcon, NavController } from '@ionic/angular/standalone';
 import { HttpClient } from '@angular/common/http';
 import { addIcons } from 'ionicons';
 import { close, shieldCheckmarkOutline } from 'ionicons/icons';
@@ -14,7 +14,7 @@ import { AuthService } from '../../../shared/services/auth.service';
   templateUrl: './login-with-otp.page.html',
   styleUrls: ['./login-with-otp.page.scss'],
   standalone: true,
-  imports: [IonButton, IonInputOtp, IonIcon, IonText, CommonModule, ReactiveFormsModule]
+  imports: [IonButton, IonInputOtp, IonIcon, CommonModule, ReactiveFormsModule]
 })
 export class LoginWithOtpPage implements OnInit {
   @Output() close = new EventEmitter<void>();
