@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LoadingController } from '@ionic/angular';
+import { LoadingController } from '@ionic/angular/standalone';
 
 @Injectable({
   providedIn: 'root'
@@ -10,22 +10,30 @@ export class LoaderService {
   constructor(private loadingController: LoadingController) {}
 
   async show(message: string = 'Loading...') {
-    if (this.loading) {
-      await this.hide();
+    try {
+      if (this.loading) {
+        await this.hide();
+      }
+      
+      this.loading = await this.loadingController.create({
+        message,
+        spinner: 'circular'
+      });
+      
+      await this.loading.present();
+    } catch (error) {
+      console.error('Error showing loader:', error);
     }
-    
-    this.loading = await this.loadingController.create({
-      message,
-      spinner: 'circular'
-    });
-    
-    await this.loading.present();
   }
 
   async hide() {
-    if (this.loading) {
-      await this.loading.dismiss();
-      this.loading = null;
+    try {
+      if (this.loading) {
+        await this.loading.dismiss();
+        this.loading = null;
+      }
+    } catch (error) {
+      console.error('Error hiding loader:', error);
     }
   }
 }
