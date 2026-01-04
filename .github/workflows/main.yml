@@ -1,0 +1,51 @@
+# Build Ionic Angular app and deploy to GitHub Pages
+# Adjust NODE version, build command, and publish_dir if needed.
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Ionic app
+        # If you use a different script (e.g. "ionic build" or "ng build --configuration production")
+        # change the command below to match your package.json scripts.
+        run: npm run build
+
+      - name: Locate build output
+        id: find_output
+        run: |
+          # Common output dirs: www (Ionic) or dist/<appname> (Angular)
+          if [ -d "./www" ]; then
+            echo "output=www" >> $GITHUB_OUTPUT
+          elif ls dist 2>/dev/null | grep -q .; then
+            # pick first directory under dist
+            first=$(ls -1 dist | head -n1)
+            echo "output=dist/$first" >> $GITHUB_OUTPUT
+          else
+            echo "No build output found in ./www or ./dist; adjust your build step or output path."
+            exit 1
+          fi
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ${{ steps.find_output.outputs.output }}
+          # You can optionally set publish_branch (default: gh-pages)
+          # publish_branch: gh-pages
