@@ -1,65 +1,122 @@
-<ion-content class="ion-padding">
+<ion-content>
   <div class="timer-container">
-    <div class="time-display" [class.finished]="isFinished">{{ display }}</div>
-    
-    <div class="input-section" *ngIf="!isRunning && remainingTime === 0">
-      <ion-item>
-        <ion-label position="stacked">Minutes</ion-label>
-        <ion-input 
-          type="number" 
-          [(ngModel)]="minutes" 
-          min="0" 
-          max="59"
-          placeholder="0">
-        </ion-input>
-      </ion-item>
-      
-      <ion-item>
-        <ion-label position="stacked">Seconds</ion-label>
-        <ion-input 
-          type="number" 
-          [(ngModel)]="seconds" 
-          min="0" 
-          max="59"
-          placeholder="0">
-        </ion-input>
-      </ion-item>
-      
-      <ion-button 
-        color="primary" 
-        (click)="setTimer()" 
-        [disabled]="minutes === 0 && seconds === 0"
-        size="large">
-        Set Timer
-      </ion-button>
-    </div>
+    <div class="timer-inner-container">
+      <div class="timer">
+        
+        <div class="timer-circle">
+          <svg class="progress-ring" width="200" height="200">
+            <circle
+              class="background-circle"
+              stroke="var(--ion-color-light)"
+              stroke-width="4"
+              fill="transparent"
+              r="96"
+              cx="100"
+              cy="100"/>
+            <circle
+              class="progress-ring-circle"
+              stroke="var(--ion-color-primary)"
+              stroke-width="4"
+              fill="transparent"
+              r="96"
+              cx="100"
+              cy="100"
+              [style.stroke-dasharray]="circumference"
+              [style.stroke-dashoffset]="dashOffset"/>
+          </svg>
+          <div class="time-content">
+            <div class="time-display" *ngIf="totalTime > 0">{{ display }}</div>
+            <div class="time-label" *ngIf="totalTime > 0">{{ getStatusLabel() }}</div>
+            <ion-button 
+              fill="clear" 
+              (click)="openModal()"
+              *ngIf="!totalTime"
+              class="set-timer-btn">
+              <ion-icon name="add" size="large"></ion-icon>
+            </ion-button>
 
-    <div class="controls" *ngIf="totalTime > 0">
-      <ion-button 
-        [color]="isRunning ? 'warning' : 'success'" 
-        (click)="isRunning ? pause() : start()"
-        [disabled]="isFinished"
-        size="large">
-        {{ isRunning ? 'Pause' : 'Start' }}
-      </ion-button>
+          <ion-modal [isOpen]="isModalOpen" (didDismiss)="closeModal()" class="timer-modal-small">
+            <ng-template>
+              <ion-header>
+                <ion-toolbar>
+                  <ion-title>Set Timer</ion-title>
+                </ion-toolbar>
+              </ion-header>
+              <ion-content class="ion-padding">
+                <ion-input 
+                  class="common-input"
+                  type="number" 
+                  [(ngModel)]="modalHours" 
+                  (ionBlur)="validateInput('hours')"
+                  labelPlacement="floating"
+                  label="Hours"
+                  fill="outline"
+                  placeholder="0">
+                </ion-input>
+                
+                <ion-input 
+                  class="common-input"
+                  type="number" 
+                  [(ngModel)]="modalMinutes" 
+                  (ionBlur)="validateInput('minutes')"
+                  labelPlacement="floating"
+                  label="Minutes"
+                  fill="outline"
+                  placeholder="0">
+                </ion-input>
+                
+                <ion-input 
+                  class="common-input"
+                  type="number" 
+                  [(ngModel)]="modalSeconds" 
+                  (ionBlur)="validateInput('seconds')"
+                  labelPlacement="floating"
+                  label="Seconds"
+                  fill="outline"
+                  placeholder="0">
+                </ion-input>
+                
+                <div class="button-group">
+                  <ion-button class="btn-secondary" (click)="closeModal()">Cancel</ion-button>
+                  <ion-button class="btn-primary" fill="solid" (click)="setTimerFromModal()" [disabled]="modalHours === 0 && modalMinutes === 0 && modalSeconds === 0">Set Timer</ion-button>
+                </div>
+              </ion-content>
+            </ng-template>
+          </ion-modal>
+          </div>
+        </div>
+        
+      </div>
       
-      <ion-button 
-        color="medium" 
-        (click)="reset()" 
-        size="large">
-        Reset
-      </ion-button>
-      
-      <ion-button 
-        color="danger" 
-        (click)="clear()" 
-        size="large">
-        Clear
-      </ion-button>
-    </div>
-
-    <div class="status" *ngIf="isFinished">
-      <h2>Time's Up!</h2>
+      <div class="floating-buttons">
+        <ion-button 
+          color="danger" 
+          (click)="pause()" 
+          class="floating-btn side-btn"
+          fill="outline"
+          shape="round">
+          <ion-icon name="stop"></ion-icon>
+        </ion-button>
+        
+        <ion-button 
+          [color]="isRunning ? 'warning' : 'success'" 
+          (click)="isRunning ? pause() : start()"
+          class="floating-btn center-btn"
+          fill="outline"
+          shape="round"
+          [disabled]="totalTime === 0">
+          <ion-icon [name]="isRunning ? 'pause' : 'play'"></ion-icon>
+        </ion-button>
+        
+        <ion-button 
+          color="medium" 
+          (click)="clear()" 
+          class="floating-btn side-btn"
+          fill="outline"
+          shape="round">
+          <ion-icon name="refresh"></ion-icon>
+        </ion-button>
+      </div>
     </div>
   </div>
 </ion-content>

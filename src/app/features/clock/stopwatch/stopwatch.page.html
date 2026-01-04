@@ -1,35 +1,73 @@
-<ion-content class="ion-padding">
+<ion-content>
   <div class="stopwatch-container">
-    <div class="time-display">{{ display }}</div>
-    
-    <div class="controls">
-      <ion-button 
-        [color]="isRunning ? 'danger' : 'success'" 
-        (click)="isRunning ? stop() : start()"
-        size="large">
-        {{ isRunning ? 'Stop' : 'Start' }}
-      </ion-button>
-      
-      <ion-button 
-        color="medium" 
-        (click)="reset()" 
-        size="large">
-        Reset
-      </ion-button>
-      
-      <ion-button 
-        color="tertiary" 
-        (click)="lap()" 
-        [disabled]="!isRunning"
-        size="large">
-        Lap
-      </ion-button>
-    </div>
+    <div class="stopwatch-inner-container">
+      <div class="stopwatch">
+        <div class="timer-circle">
+          <svg class="progress-ring" width="200" height="200">
+            <circle
+              class="background-circle"
+              stroke="var(--ion-color-light)"
+              stroke-width="4"
+              fill="transparent"
+              r="96"
+              cx="100"
+              cy="100"/>
+            <circle
+              class="progress-ring-circle"
+              stroke="var(--ion-color-primary)"
+              stroke-width="4"
+              fill="transparent"
+              r="96"
+              cx="100"
+              cy="100"
+              [style.stroke-dasharray]="circumference"
+              [style.stroke-dashoffset]="dashOffset"/>
+          </svg>
+          <div class="time-content">
+            <div class="time-display">{{ display }}</div>
+            <div class="time-label">{{ isRunning ? 'Running' : 'Stopped' }}</div>
+          </div>
+        </div>
 
-    <ion-list *ngIf="laps.length > 0">
-      <ion-item *ngFor="let lap of laps; let i = index">
-        <ion-label>Lap {{ laps.length - i }}: {{ lap }}</ion-label>
-      </ion-item>
-    </ion-list>
+        <div class="laps-data" *ngIf="laps.length > 0">
+          <div class="laps-scroll">
+            <div *ngFor="let lap of laps; let i = index" class="lap-row">
+              <span class="lap-num">{{ laps.length - i }}</span>
+              <span class="lap-val">{{ lap }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="floating-buttons">
+        <ion-button 
+          color="medium" 
+          (click)="reset()" 
+          class="floating-btn side-btn"
+          fill="outline"
+          shape="round">
+          <ion-icon name="refresh"></ion-icon>
+        </ion-button>
+        
+        <ion-button 
+          [color]="isRunning ? 'danger' : 'success'" 
+          (click)="isRunning ? stop() : start()"
+          class="floating-btn center-btn"
+          fill="outline"
+          shape="round">
+          <ion-icon [name]="isRunning ? 'pause' : 'play'"></ion-icon>
+        </ion-button>
+        
+        <ion-button 
+          color="tertiary" 
+          (click)="lap()" 
+          [disabled]="!isRunning"
+          class="floating-btn side-btn"
+          fill="outline"
+          shape="round">
+          <ion-icon name="flag"></ion-icon>
+        </ion-button>
+      </div>
+    </div>
   </div>
 </ion-content>

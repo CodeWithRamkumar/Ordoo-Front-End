@@ -17,7 +17,7 @@ interface WorldClock {
   templateUrl: './world-clock.page.html',
   styleUrls: ['./world-clock.page.scss'],
   standalone: true,
-  imports: [CommonModule, IonContent, IonCard, IonCardContent, IonIcon]
+  imports: [CommonModule, IonContent, IonCard, IonCardContent]
 })
 export class WorldClockPage implements OnInit, OnDestroy {
   worldClocks: WorldClock[] = [

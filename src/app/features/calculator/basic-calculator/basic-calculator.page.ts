@@ -340,12 +340,6 @@ export class BasicCalculatorPage implements OnInit {
     }
   }
 
-  onDisplayInput(event: any) {
-    this.display = event.target.value;
-    this.justCalculated = false;
-    this.calculateLive();
-  }
-
   clearHistory() {
     this.history = [];
   }

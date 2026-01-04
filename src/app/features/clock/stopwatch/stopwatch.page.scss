@@ -1,27 +1,170 @@
 .stopwatch-container {
+  height: 100%;
+  align-content: center;
+  overflow: auto;
+  padding: var(--spacing-md);
+}
+
+.stopwatch-inner-container {
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
-  padding: 2rem 0;
+  justify-content: center;
+  width: 100%;
+  position: relative;
 }
 
-.time-display {
-  font-size: 3rem;
-  font-weight: bold;
-  font-family: 'Courier New', monospace;
-  text-align: center;
-  margin: 2rem 0;
-}
-
-.controls {
+.stopwatch {
+  max-width: 400px;
+  width: 100%;
+  background: var(--ion-card-background);
+  border-radius: var(--border-radius-xl);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: var(--spacing-2xl);
+  font-family: var(--ion-font-family);
+  position: relative;
   display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-md);
+  height: 500px;
+}
+
+.timer-circle {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  display: flex;
+  align-items: center;
   justify-content: center;
 }
 
-ion-list {
+.progress-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotate(-90deg);
+}
+
+.progress-ring-circle {
+  transition: none;
+}
+
+.time-content {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.time-display {
+  color: var(--ion-text-color);
+  font-size: var(--font-size-4xl);
+  font-weight: var(--font-weight-black);
+  line-height: 1;
+  font-family: var(--ion-font-family);
+  letter-spacing: -1px;
+}
+
+.time-label {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-medium);
+  color: var(--ion-color-medium);
+  margin-top: var(--spacing-xs);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.floating-buttons {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+  z-index: 10;
+}
+
+.floating-btn {
+  --border-width: 2px;
+  --box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  background: rgba(255, 255, 255, 0.8);
+  
+  ion-icon {
+    font-size: var(--font-size-xl);
+  }
+}
+
+.side-btn {
+  width: 50px;
+  height: 50px;
+  --border-radius: 50%;
+}
+
+.center-btn {
+  width: 60px;
+  height: 60px;
+  --border-radius: 50%;
+  
+  ion-icon {
+    font-size: var(--font-size-2xl);
+  }
+}
+
+.laps-data {
   width: 100%;
-  max-width: 400px;
+  margin-top: var(--spacing-lg);
+}
+
+.laps-scroll {
+  max-height: 120px;
+  overflow-y: auto;
+  padding-right: var(--spacing-xs);
+  
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  
+  &::-webkit-scrollbar-thumb {
+    background: var(--ion-color-primary);
+    border-radius: 2px;
+  }
+}
+
+.lap-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm) var(--spacing-md);
+  margin-bottom: var(--spacing-xs);
+  background: var(--ion-background-color);
+  border-radius: var(--border-radius-md);
+  border: 2px solid var(--ion-color-light);
+}
+
+.lap-num {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--ion-color-medium);
+}
+
+.lap-val {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--ion-text-color);
+  font-family: var(--ion-font-family);
+}
+
+@media (min-width: 769px) {
+  .stopwatch {
+    max-width: 500px;
+  }
 }

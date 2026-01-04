@@ -74,7 +74,7 @@
         <div class="calculator">
           <div class="display">
             <div class="expression-text">{{ result || '&nbsp;' }}</div>
-            <input class="display-text" [(ngModel)]="display" (input)="onDisplayInput($event)">
+            <input class="display-text" [(ngModel)]="display" readonly>
             @if (history.length > 0) {
               <button class="history-link" (click)="toggleHistory()">
                 <ion-icon name="time-outline"></ion-icon>

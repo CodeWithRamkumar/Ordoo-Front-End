@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IonMenu, IonHeader, IonToolbar, IonContent, IonList, IonItem, IonIcon, IonLabel, IonAvatar, IonImg, MenuController, NavController } from '@ionic/angular/standalone';
-import { home, person, logOut, search, calculator, copy, personSharp } from 'ionicons/icons';
+import { home, person, logOut, search, calculator, copy, personSharp, time } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 import { AuthService } from '../../services/auth.service';
 import { HttpClient } from '@angular/common/http';
@@ -26,7 +26,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   private userDataSubscription?: Subscription;
 
   constructor(private menuCtrl: MenuController, private navCtrl: NavController, private authService: AuthService, private http: HttpClient, private config: ConfigService, private loader: LoaderService) {
-    addIcons({ home, person, search, logOut, calculator , copy, personSharp});
+    addIcons({ home, person, search, logOut, calculator , copy, personSharp, time});
   }
 
   async ngOnInit() {

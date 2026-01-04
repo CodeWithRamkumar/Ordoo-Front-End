@@ -1,15 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonButton, IonInput, IonItem, IonLabel } from '@ionic/angular/standalone';
+import { IonContent, IonButton, IonInput, IonItem, IonLabel, IonIcon, IonModal, IonHeader, IonToolbar, IonTitle, ModalController } from '@ionic/angular/standalone';
 import { HeaderService } from 'src/app/shared/services/header.service';
+import { addIcons } from 'ionicons';
+import { play, pause, refresh, stop, add, timeOutline } from 'ionicons/icons';
 
 @Component({
   selector: 'app-timer',
   templateUrl: './timer.page.html',
   styleUrls: ['./timer.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonContent, IonButton, IonInput, IonItem, IonLabel]
+  imports: [CommonModule, FormsModule, IonContent, IonButton, IonInput, IonItem, IonIcon, IonModal, IonHeader, IonToolbar, IonTitle]
 })
 export class TimerPage implements OnInit, OnDestroy {
   totalTime = 0;
@@ -17,11 +19,20 @@ export class TimerPage implements OnInit, OnDestroy {
   display = '00:00';
   isRunning = false;
   isFinished = false;
+  circumference = 2 * Math.PI * 96;
+  dashOffset = this.circumference;
+  hours = 0;
   minutes = 0;
   seconds = 0;
+  isModalOpen = false;
+  modalHours = 0;
+  modalMinutes = 0;
+  modalSeconds = 0;
   private interval: any;
 
-  constructor(private headerService: HeaderService) {}
+  constructor(private headerService: HeaderService) {
+    addIcons({ play, pause, refresh, stop, add, timeOutline });
+  }
 
   ngOnInit() {
     this.headerService.updateHeaderData({
@@ -39,11 +50,52 @@ export class TimerPage implements OnInit, OnDestroy {
     if (this.interval) clearInterval(this.interval);
   }
 
-  setTimer() {
-    this.totalTime = (this.minutes * 60) + this.seconds;
+  setTimerFromInputs() {
+    if (this.hours > 0 || this.minutes > 0 || this.seconds > 0) {
+      this.setTimer(this.hours, this.minutes, this.seconds);
+    }
+  }
+
+  openModal() {
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
+  }
+
+  setTimerFromModal() {
+    if (this.modalHours > 0 || this.modalMinutes > 0 || this.modalSeconds > 0) {
+      this.setTimer(this.modalHours, this.modalMinutes, this.modalSeconds);
+      this.closeModal();
+    }
+  }
+
+  validateInput(field: string) {
+    if (field === 'hours') {
+      if (this.modalHours > 23) this.modalHours = 23;
+      if (this.modalHours < 0) this.modalHours = 0;
+    } else if (field === 'minutes') {
+      if (this.modalMinutes > 59) this.modalMinutes = 59;
+      if (this.modalMinutes < 0) this.modalMinutes = 0;
+    } else if (field === 'seconds') {
+      if (this.modalSeconds > 59) this.modalSeconds = 59;
+      if (this.modalSeconds < 0) this.modalSeconds = 0;
+    }
+  }
+
+  setTimer(hours: number, minutes: number, seconds: number) {
+    this.totalTime = (hours * 3600) + (minutes * 60) + seconds;
     this.remainingTime = this.totalTime;
     this.isFinished = false;
     this.updateDisplay();
+  }
+
+  getStatusLabel(): string {
+    if (this.isFinished) return 'Finished';
+    if (this.isRunning) return 'Running';
+    if (this.totalTime > 0) return 'Paused';
+    return 'Set Timer';
   }
 
   start() {
@@ -62,7 +114,10 @@ export class TimerPage implements OnInit, OnDestroy {
 
   pause() {
     this.isRunning = false;
-    if (this.interval) clearInterval(this.interval);
+    if (this.interval) {
+      clearInterval(this.interval);
+      this.interval = null;
+    }
   }
 
   reset() {
@@ -76,10 +131,9 @@ export class TimerPage implements OnInit, OnDestroy {
     this.pause();
     this.totalTime = 0;
     this.remainingTime = 0;
-    this.minutes = 0;
-    this.seconds = 0;
     this.isFinished = false;
     this.display = '00:00';
+    this.dashOffset = this.circumference;
   }
 
   private finish() {
@@ -91,8 +145,20 @@ export class TimerPage implements OnInit, OnDestroy {
   }
 
   private updateDisplay() {
-    const mins = Math.floor(this.remainingTime / 60);
+    const hours = Math.floor(this.remainingTime / 3600);
+    const mins = Math.floor((this.remainingTime % 3600) / 60);
     const secs = this.remainingTime % 60;
-    this.display = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    
+    if (hours > 0) {
+      this.display = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    } else {
+      this.display = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+    
+    // Update progress ring - fill as time counts down
+    if (this.totalTime > 0) {
+      const progress = (this.totalTime - this.remainingTime) / this.totalTime;
+      this.dashOffset = this.circumference - (progress * this.circumference);
+    }
   }
 }
