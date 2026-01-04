@@ -16,6 +16,7 @@ import {
 } from 'ionicons/icons';
 import { CloudinaryService } from '../../../shared/services/cloudinary.service';
 import { LoaderService } from '../../../shared/services/loader.service';
+import { AuthService } from '../../../shared/services/auth.service';
 
 declare var $: any;
 
@@ -43,7 +44,8 @@ export class ProfileSetupPage implements OnInit, AfterViewInit, OnDestroy {
     private formBuilder: FormBuilder,
     private navCtrl: NavController,
     private cloudinaryService: CloudinaryService,
-    private loader: LoaderService
+    private loader: LoaderService,
+    private authService: AuthService
   ) {
     addIcons({
       personOutline, callOutline, cameraOutline, calendarOutline, checkmarkCircle
@@ -140,6 +142,10 @@ export class ProfileSetupPage implements OnInit, AfterViewInit, OnDestroy {
     this.cloudinaryService.updateProfile(profileData).subscribe({
       next: async (response) => {
         console.log('Profile updated:', response);
+        // Update local storage with new profile data
+        if (response.profile) {
+          await this.authService.updateProfile(response.profile);
+        }
         await this.loader.hide();
         this.navCtrl.navigateRoot('/workspace');
       },

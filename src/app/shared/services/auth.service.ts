@@ -28,6 +28,11 @@ export class AuthService {
     this.userDataChangedSubject.next(); // Emit change event
   }
 
+  async updateProfile(profile: any) {
+    await this._storage?.set('profile', profile);
+    this.userDataChangedSubject.next(); // Emit change event
+  }
+
   async getUserData() {
     return {
       user: await this._storage?.get('user'),

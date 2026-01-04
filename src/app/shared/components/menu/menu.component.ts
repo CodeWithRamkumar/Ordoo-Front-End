@@ -54,7 +54,7 @@ export class MenuComponent implements OnInit, OnDestroy {
       this.userProfile = {
         name: userData.profile?.full_name || userData.user.email || 'User',
         email: userData.user.email || 'No email',
-        image: userData.profile?.avatar_url || 'assets/icon/ordoo-logo.svg'
+        image: userData.profile?.avatar_url || 'assets/icon/default-avatar.svg'
       };
       console.log('Menu - Updated profile:', this.userProfile);
     } else {
