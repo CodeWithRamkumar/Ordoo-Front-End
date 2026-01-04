@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IonMenu, IonHeader, IonToolbar, IonContent, IonList, IonItem, IonIcon, IonLabel, IonAvatar, IonImg, MenuController, NavController } from '@ionic/angular/standalone';
 import { home, person, logOut, search, calculator, copy, personSharp } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
@@ -6,6 +6,7 @@ import { AuthService } from '../../services/auth.service';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../../services/config.service';
 import { LoaderService } from '../../services/loader.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -15,13 +16,14 @@ import { LoaderService } from '../../services/loader.service';
   standalone: true,
   imports: [IonImg, IonAvatar, IonMenu, IonHeader, IonToolbar, IonContent, IonList, IonItem, IonIcon, IonLabel]
 })
-export class MenuComponent implements OnInit {
+export class MenuComponent implements OnInit, OnDestroy {
   userProfile = {
     name: 'Loading...',
     email: 'Loading...',
     image: 'assets/icon/ordoo-logo.svg'
   };
   showCopied = false;
+  private userDataSubscription?: Subscription;
 
   constructor(private menuCtrl: MenuController, private navCtrl: NavController, private authService: AuthService, private http: HttpClient, private config: ConfigService, private loader: LoaderService) {
     addIcons({ home, person, search, logOut, calculator , copy, personSharp});
@@ -31,6 +33,17 @@ export class MenuComponent implements OnInit {
     // Ensure storage is initialized
     await this.authService.init();
     await this.loadUserProfile();
+    
+    // Subscribe to user data changes
+    this.userDataSubscription = this.authService.userDataChanged.subscribe(() => {
+      this.loadUserProfile();
+    });
+  }
+
+  ngOnDestroy() {
+    if (this.userDataSubscription) {
+      this.userDataSubscription.unsubscribe();
+    }
   }
 
   async loadUserProfile() {

@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpEventType } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CloudinaryService {
-  private apiUrl = 'http://localhost:3001/api';
   private chunkSize = 5 * 1024 * 1024; // 5MB chunks
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private config: ConfigService) {}
 
   uploadLargeFile(file: File): Observable<any> {
     if (file.size <= this.chunkSize) {
@@ -19,13 +19,13 @@ export class CloudinaryService {
   }
 
   updateProfile(profileData: any): Observable<any> {
-    return this.http.put(`${this.apiUrl}/user/profile/setup`, profileData);
+    return this.http.put(`${this.config.API_BASE_URL}/user/profile/setup`, profileData);
   }
 
   private uploadSingleFile(file: File): Observable<any> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.http.post(`${this.apiUrl}/upload`, formData, {
+    return this.http.post(`${this.config.API_BASE_URL}/upload`, formData, {
       reportProgress: true,
       observe: 'events'
     });
@@ -49,7 +49,7 @@ export class CloudinaryService {
         formData.append('uploadId', uploadId);
         formData.append('fileName', file.name);
 
-        this.http.post(`${this.apiUrl}/upload-chunk`, formData).subscribe({
+        this.http.post(`${this.config.API_BASE_URL}/upload-chunk`, formData).subscribe({
           next: (response) => {
             uploadedChunks++;
             const progress = (uploadedChunks / totalChunks) * 100;
