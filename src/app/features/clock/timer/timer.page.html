@@ -1,0 +1,65 @@
+<ion-content class="ion-padding">
+  <div class="timer-container">
+    <div class="time-display" [class.finished]="isFinished">{{ display }}</div>
+    
+    <div class="input-section" *ngIf="!isRunning && remainingTime === 0">
+      <ion-item>
+        <ion-label position="stacked">Minutes</ion-label>
+        <ion-input 
+          type="number" 
+          [(ngModel)]="minutes" 
+          min="0" 
+          max="59"
+          placeholder="0">
+        </ion-input>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label position="stacked">Seconds</ion-label>
+        <ion-input 
+          type="number" 
+          [(ngModel)]="seconds" 
+          min="0" 
+          max="59"
+          placeholder="0">
+        </ion-input>
+      </ion-item>
+      
+      <ion-button 
+        color="primary" 
+        (click)="setTimer()" 
+        [disabled]="minutes === 0 && seconds === 0"
+        size="large">
+        Set Timer
+      </ion-button>
+    </div>
+
+    <div class="controls" *ngIf="totalTime > 0">
+      <ion-button 
+        [color]="isRunning ? 'warning' : 'success'" 
+        (click)="isRunning ? pause() : start()"
+        [disabled]="isFinished"
+        size="large">
+        {{ isRunning ? 'Pause' : 'Start' }}
+      </ion-button>
+      
+      <ion-button 
+        color="medium" 
+        (click)="reset()" 
+        size="large">
+        Reset
+      </ion-button>
+      
+      <ion-button 
+        color="danger" 
+        (click)="clear()" 
+        size="large">
+        Clear
+      </ion-button>
+    </div>
+
+    <div class="status" *ngIf="isFinished">
+      <h2>Time's Up!</h2>
+    </div>
+  </div>
+</ion-content>

@@ -1,0 +1,32 @@
+<ion-content class="ion-padding">
+  <div class="alarm-container">
+    <div class="add-alarm">
+      <ion-item>
+        <ion-label position="stacked">Time</ion-label>
+        <ion-input type="time" [(ngModel)]="newAlarmTime"></ion-input>
+      </ion-item>
+      
+      <ion-item>
+        <ion-label position="stacked">Label</ion-label>
+        <ion-input [(ngModel)]="newAlarmLabel" placeholder="Alarm"></ion-input>
+      </ion-item>
+      
+      <ion-button color="primary" (click)="addAlarm()" [disabled]="!newAlarmTime">
+        Add Alarm
+      </ion-button>
+    </div>
+
+    <ion-list *ngIf="alarms.length > 0">
+      <ion-item *ngFor="let alarm of alarms">
+        <ion-checkbox [(ngModel)]="alarm.enabled" (ionChange)="toggleAlarm(alarm)"></ion-checkbox>
+        <ion-label class="ion-margin-start">
+          <h2>{{ alarm.time }}</h2>
+          <p>{{ alarm.label }}</p>
+        </ion-label>
+        <ion-button fill="clear" color="danger" (click)="deleteAlarm(alarm.id)">
+          Delete
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

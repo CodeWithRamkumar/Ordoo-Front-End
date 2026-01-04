@@ -12,6 +12,10 @@ export const routes: Routes = [
             {
                 path: 'calculator-dashboard',
                 loadChildren: () => import('../calculator/calculator.routes').then(m => m.routes)
+            },
+            {
+                path: 'clock',
+                loadChildren: () => import('../clock/clock.routes').then(m => m.routes)
             }
         ]
     },

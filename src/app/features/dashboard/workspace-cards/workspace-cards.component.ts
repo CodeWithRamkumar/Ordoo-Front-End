@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { IonCard, IonCardContent, IonIcon, IonLabel, NavController } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { calculator, musicalNotes, cloud } from 'ionicons/icons';
+import { calculator, musicalNotes, cloud, time } from 'ionicons/icons';
 import { WorkspaceCard } from 'src/app/core/utils/work-space-card';
 
 @Component({
@@ -31,6 +31,12 @@ export class WorkspaceCardsComponent implements OnInit {
       text: 'Weather',
       subtext: 'Check the weather',
       route: '/workspace/weather'
+    },
+    {
+      icon: 'time',
+      text: 'Clock',
+      subtext: 'Clock with time zones',
+      route: '/workspace/clock'
     }
   ];
 
@@ -38,14 +44,14 @@ export class WorkspaceCardsComponent implements OnInit {
   @Input() pageSubHeading: string = 'Access all your applications in one place';
 
   constructor(private navCtrl: NavController) {
-      addIcons({ calculator, musicalNotes, cloud });
+    addIcons({ calculator, musicalNotes, cloud, time });
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   navigateToRoute(route: string) {
     console.log(route);
-    
+
     this.navCtrl.navigateRoot(route);
   }
 }

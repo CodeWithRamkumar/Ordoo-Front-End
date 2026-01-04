@@ -1,0 +1,80 @@
+.world-clock-content {
+  --background: var(--ion-background-color);
+}
+
+.world-clock-container {
+  height: 100%;
+  align-content: center;
+  overflow: auto;
+  padding: var(--spacing-md);
+}
+
+.clocks-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-md);
+  max-width: 1200px;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.clock-card {
+  background: var(--ion-card-background);
+  border-radius: var(--border-radius-lg);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--ion-color-light-shade);
+  margin: 0;
+  flex: 0 1 280px;
+  min-width: 280px;
+}
+
+ion-card-content {
+  text-align: center;
+}
+
+.city-name {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--ion-color-primary);
+  font-family: var(--ion-font-family);
+  margin-bottom: var(--spacing-sm);
+}
+
+.time-display {
+  font-size: var(--font-size-7xl);
+  font-weight: var(--font-weight-light);
+  color: var(--ion-text-color);
+  font-family: var(--ion-font-family);
+  margin-bottom: var(--spacing-xs);
+  letter-spacing: 1px;
+}
+
+.date-display {
+  font-size: var(--font-size-md);
+  color: var(--ion-text-color);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--ion-font-family);
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 768px) {
+  .clocks-grid {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+  }
+  
+  .clock-card {
+    flex: 1;
+    min-width: auto;
+  }
+  
+  .time-display {
+    font-size: var(--font-size-5xl);
+  }
+  
+  .city-name {
+    font-size: var(--font-size-lg);
+  }
+}

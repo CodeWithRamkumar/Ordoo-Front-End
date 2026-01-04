@@ -1,0 +1,32 @@
+<ion-content class="analog-clock-content">
+  <div class="clock-container">
+    <div class="clock-wrapper">
+      <div class="watch-icon">
+        <ion-icon [name]="watchIcon"></ion-icon>
+      </div>
+      <div class="clock">
+        <div class="numbers">
+          <span class="num-1">1</span>
+          <span class="num-2">2</span>
+          <span class="num-3">3</span>
+          <span class="num-4">4</span>
+          <span class="num-5">5</span>
+          <span class="num-6">6</span>
+          <span class="num-7">7</span>
+          <span class="num-8">8</span>
+          <span class="num-9">9</span>
+          <span class="num-10">10</span>
+          <span class="num-11">11</span>
+          <span class="num-12">12</span>
+        </div>
+        <div class="hands">
+          <div class="hour-hand" [style.transform]="'rotate(' + hourAngle + 'deg)'"></div>
+          <div class="minute-hand" [style.transform]="'rotate(' + minuteAngle + 'deg)'"></div>
+          <div class="second-hand" [style.transform]="'rotate(' + secondAngle + 'deg)'"></div>
+        </div>
+        <div class="center-dot"></div>
+      </div>
+      <div class="date-display">{{ currentDate }}</div>
+    </div>
+  </div>
+</ion-content>

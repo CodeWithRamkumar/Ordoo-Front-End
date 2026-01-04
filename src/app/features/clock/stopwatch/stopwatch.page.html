@@ -1,0 +1,35 @@
+<ion-content class="ion-padding">
+  <div class="stopwatch-container">
+    <div class="time-display">{{ display }}</div>
+    
+    <div class="controls">
+      <ion-button 
+        [color]="isRunning ? 'danger' : 'success'" 
+        (click)="isRunning ? stop() : start()"
+        size="large">
+        {{ isRunning ? 'Stop' : 'Start' }}
+      </ion-button>
+      
+      <ion-button 
+        color="medium" 
+        (click)="reset()" 
+        size="large">
+        Reset
+      </ion-button>
+      
+      <ion-button 
+        color="tertiary" 
+        (click)="lap()" 
+        [disabled]="!isRunning"
+        size="large">
+        Lap
+      </ion-button>
+    </div>
+
+    <ion-list *ngIf="laps.length > 0">
+      <ion-item *ngFor="let lap of laps; let i = index">
+        <ion-label>Lap {{ laps.length - i }}: {{ lap }}</ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

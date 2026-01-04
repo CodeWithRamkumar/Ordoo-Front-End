@@ -1,0 +1,13 @@
+<ion-content class="world-clock-content">
+  <div class="world-clock-container">
+    <div class="clocks-grid">
+      <ion-card *ngFor="let clock of worldClocks" class="clock-card">
+        <ion-card-content>
+          <div class="city-name">{{ clock.city }}</div>
+          <div class="time-display">{{ clock.time }}</div>
+          <div class="date-display">{{ clock.date }}</div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+</ion-content>

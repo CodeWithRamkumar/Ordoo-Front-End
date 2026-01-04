@@ -11,10 +11,5 @@ export const routes: Routes = [
     path: 'workspace',
     canActivate: [authGuard],
     loadChildren: () => import('./features/dashboard/workspace.routes').then(m => m.routes)
-  },
-  {
-    path: 'basic-calculator',
-    canActivate: [authGuard],
-    loadComponent: () => import('./features/calculator/basic-calculator/basic-calculator.page').then( m => m.BasicCalculatorPage)
   }
 ];

@@ -1,0 +1,59 @@
+.digital-clock-content {
+  --background: var(--ion-background-color);
+}
+
+.clock-container {
+  height: 100%;
+  align-content: center;
+  overflow: auto;
+  padding: var(--spacing-md);
+}
+
+.digital-display {
+  text-align: center;
+  margin: 0 auto;
+  max-width: 500px;
+  width: 100%;
+}
+
+.time-display {
+  font-size: var(--font-size-15xl);
+  font-weight: var(--font-weight-extralight);
+  color: var(--ion-color-primary);
+  margin-bottom: var(--spacing-lg);
+  letter-spacing: 4px;
+  min-height: 5.5rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  font-family: var(--ion-font-family);
+}
+
+.date-display {
+  font-size: var(--font-size-xl);
+  color: var(--ion-text-color);
+  font-weight: var(--font-weight-light);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  opacity: 0.7;
+  font-family: var(--ion-font-family);
+}
+
+@media (max-width: 768px) {
+  .time-display {
+    font-size: var(--font-size-11xl);
+    min-height: 4rem;
+    letter-spacing: 3px;
+  }
+  
+  .date-display {
+    font-size: var(--font-size-lg);
+    letter-spacing: 2px;
+  }
+  
+  .digital-display {
+    max-width: 380px;
+  }
+}

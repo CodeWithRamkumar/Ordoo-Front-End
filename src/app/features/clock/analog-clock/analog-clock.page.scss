@@ -1,0 +1,176 @@
+.analog-clock-content {
+  --background: var(--ion-background-color);
+}
+
+.clock-container {
+   height: 100%;
+  align-content: center;
+  overflow: auto;
+  padding: var(--spacing-md);
+  margin: 0 auto;
+}
+
+.clock-wrapper {
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+
+.clock {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: var(--ion-card-background);
+  border: 6px solid var(--ion-color-primary);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.15);
+}
+
+.numbers {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.numbers span {
+  position: absolute;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--ion-color-primary);
+  font-family: var(--ion-font-family);
+  transform: translate(-50%, -50%);
+}
+
+.num-12 { top: 8%; left: 50%; }
+.num-1 { top: 15%; left: 75%; }
+.num-2 { top: 30%; left: 87%; }
+.num-3 { top: 50%; left: 92%; }
+.num-4 { top: 70%; left: 87%; }
+.num-5 { top: 85%; left: 75%; }
+.num-6 { top: 92%; left: 50%; }
+.num-7 { top: 85%; left: 25%; }
+.num-8 { top: 70%; left: 13%; }
+.num-9 { top: 50%; left: 8%; }
+.num-10 { top: 30%; left: 13%; }
+.num-11 { top: 15%; left: 25%; }
+
+.hands {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+}
+
+.hour-hand {
+  position: absolute;
+  width: 8px;
+  height: 70px;
+  background: linear-gradient(to top, var(--ion-text-color), var(--ion-color-primary));
+  border-radius: var(--border-radius-md);
+  transform-origin: 4px 70px;
+  left: -4px;
+  top: -70px;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: none;
+}
+
+.minute-hand {
+  position: absolute;
+  width: 6px;
+  height: 95px;
+  background: linear-gradient(to top, var(--ion-text-color), var(--ion-color-primary));
+  border-radius: var(--border-radius-md);
+  transform-origin: 3px 95px;
+  left: -3px;
+  top: -95px;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: none;
+}
+
+.second-hand {
+  position: absolute;
+  width: 3px;
+  height: 105px;
+  background: linear-gradient(to top, var(--ion-color-danger), #ff6b6b);
+  border-radius: var(--border-radius-sm);
+  transform-origin: 1.5px 105px;
+  left: -1.5px;
+  top: -105px;
+  z-index: 3;
+  transition: none;
+  box-shadow: 0 2px 8px rgba(255, 0, 0, 0.3);
+}
+
+.center-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, var(--ion-color-primary), var(--ion-text-color));
+  border: 3px solid var(--ion-card-background);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+}
+
+.date-display {
+  text-align: center;
+  margin-top: var(--spacing-lg);
+  font-size: var(--font-size-xl);
+  color: var(--ion-text-color);
+  font-weight: var(--font-weight-light);
+  font-family: var(--ion-font-family);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  opacity: 0.7;
+  white-space: nowrap;
+}
+
+.clock::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 90%;
+  height: 90%;
+  border: 2px solid var(--ion-color-light);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.3;
+}
+
+@media (max-width: 768px) {
+  .clock-wrapper {
+    max-width: 260px;
+  }
+  
+  .numbers span {
+    font-size: var(--font-size-lg);
+  }
+  
+  .hour-hand {
+    height: 60px;
+    width: 7px;
+    transform-origin: 3.5px 60px;
+    left: -3.5px;
+    top: -60px;
+  }
+  
+  .minute-hand {
+    height: 80px;
+    width: 5px;
+    transform-origin: 2.5px 80px;
+    left: -2.5px;
+    top: -80px;
+  }
+  
+  .second-hand {
+    height: 90px;
+    transform-origin: 1.5px 90px;
+    top: -90px;
+  }
+}
