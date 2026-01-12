@@ -28,5 +28,9 @@ export const routes: Routes = [
   {
     path: 'alarm',
     loadComponent: () => import('./alarm/alarm.page').then(m => m.AlarmPage)
+  },
+  {
+    path: 'alarm',
+    loadComponent: () => import('./alarm/alarm.page').then( m => m.AlarmPage)
   }
 ];

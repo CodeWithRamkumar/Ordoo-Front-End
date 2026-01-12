@@ -24,7 +24,8 @@ export class TabsComponent implements OnInit {
   }
 
   isActive(route: string): boolean {
-    return window.location.pathname === route;
+    const currentPath = window.location.hash.replace('#', '') || window.location.pathname;
+    return currentPath === route;
   }
 
 }

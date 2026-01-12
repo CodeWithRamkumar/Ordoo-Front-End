@@ -7,6 +7,7 @@ export const authGuard: CanActivateFn = async (route, state) => {
   const navCtrl = inject(NavController);
   const authService = inject(AuthService);
   const token = await authService.getToken();
+  // const token = true;
 
   // Allow access to public auth routes without token
   if (state.url.includes('/auth/login') || 

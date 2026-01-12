@@ -17,7 +17,7 @@
           <h2 class="form-title">Profile</h2>
           <p class="form-subtitle">Tell us about yourself</p>
 
-          <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+          <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form" autocomplete="off">
             <!-- Profile Image Upload -->
             <div class="image-upload-section">
               <div class="avatar-container" (click)="triggerImageUpload()">
@@ -33,17 +33,17 @@
 
             <ion-item>
               <ion-icon name="person-outline" class="profile-floating-icons-left"></ion-icon>
-              <ion-input class="common-input common-input-design-with-icon-left" formControlName="fullName"
+              <ion-input class="common-input common-input-design-with-icon-left" formControlName="full_name"
                 labelPlacement="floating" type="text" label="Full Name" fill="outline"
-                placeholder="Enter your full name" mode="md">
+                placeholder="Enter your full name" mode="md" autocomplete="name">
               </ion-input>
             </ion-item>
 
             <ion-item>
               <ion-icon name="call-outline" class="profile-floating-icons-left"></ion-icon>
               <ion-input class="common-input common-input-design-with-icon-left" formControlName="phone"
-                labelPlacement="floating" type="tel" label="Phone Number" fill="outline" placeholder="(123) 456-7890"
-                mode="md" (ionInput)="onPhoneInput($event)">
+                labelPlacement="floating" type="tel" label="Phone Number" fill="outline" placeholder="98765 43210"
+                mode="md" (ionInput)="onPhoneInput($event)" autocomplete="tel">
               </ion-input>
             </ion-item>
 
@@ -66,7 +66,7 @@
               <ion-icon name="calendar-outline" class="profile-floating-icons-left"></ion-icon>
               <div class="date-input-wrapper" 
                    [class.has-focus]="isDateFocused" 
-                   [class.has-value]="dateOfBirth"
+                   [class.has-value]="dob"
                    [class.ion-touched]="isDateTouched"
                    [class.ion-invalid]="isDateInvalid"
                    [class.ion-valid]="isDateValid">
@@ -96,8 +96,13 @@
               </ion-textarea>
             </ion-item>
 
-            <ion-button class="btn-primary" mode="md" expand="block"  type="submit" [disabled]="!profileForm.valid">
-              Complete Setup
+            <ion-button class="btn-primary" mode="md" expand="block" type="submit" [disabled]="!profileForm.valid || isSubmitting">
+              @if (!isSubmitting) {
+                <span>Complete Setup</span>
+              }
+              @if (isSubmitting) {
+                <span>Setting up...</span>
+              }
             </ion-button>
           </form>
 

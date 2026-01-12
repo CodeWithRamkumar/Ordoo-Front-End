@@ -24,11 +24,11 @@
         <h2 class="form-title">Welcome Back</h2>
         <p class="form-subtitle">Please sign in to your account</p>
 
-        <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form">
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form" autocomplete="off">
           <ion-item [class.error-item]="emailNotExists || loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
             <ion-icon name="mail-outline" class="login-floating-icons-left"></ion-icon>
             <ion-input class="common-input common-input-design-with-icon-left" formControlName="email" labelPlacement="floating"
-              type="email" label="Email address" fill="outline" placeholder="Enter email" mode="md"
+              type="email" label="Email address" fill="outline" placeholder="Enter email" mode="md" autocomplete="new-email"
               [class.ion-invalid]="emailNotExists || loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
               [class.ion-touched]="emailNotExists || loginForm.get('email')?.touched"
               [errorText]="emailNotExists ? 'Email does not exist' : 'Please enter a valid email'"
@@ -41,7 +41,7 @@
             <ion-icon name="lock-closed-outline" class="login-floating-icons-left"></ion-icon>
             <ion-input class="common-input common-input-design-with-icon-left-and-right" labelPlacement="floating"
               formControlName="password" [type]="showPassword ? 'text' : 'password'" label="Password" fill="outline"
-              mode="md" placeholder="Enter password"
+              mode="md" placeholder="Enter password" autocomplete="new-password"
               [class.ion-invalid]="passwordInvalid || loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
               [class.ion-touched]="passwordInvalid || loginForm.get('password')?.touched"
               [errorText]="passwordInvalid ? 'Password is invalid' : 'Password must be at least 6 characters'"

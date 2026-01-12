@@ -1,17 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonButton, IonInput, IonItem, IonLabel, IonIcon, IonModal, IonHeader, IonToolbar, IonTitle, ModalController } from '@ionic/angular/standalone';
+import { IonContent, IonButton, IonInput,IonIcon, IonModal, IonHeader, IonToolbar, IonTitle, ModalController } from '@ionic/angular/standalone';
 import { HeaderService } from 'src/app/shared/services/header.service';
 import { addIcons } from 'ionicons';
-import { play, pause, refresh, stop, add, timeOutline } from 'ionicons/icons';
+import { play, pause, refresh, stop, add , timerOutline} from 'ionicons/icons';
 
 @Component({
   selector: 'app-timer',
   templateUrl: './timer.page.html',
   styleUrls: ['./timer.page.scss'],
   standalone: true,
-  imports: [CommonModule, FormsModule, IonContent, IonButton, IonInput, IonItem, IonIcon, IonModal, IonHeader, IonToolbar, IonTitle]
+  imports: [CommonModule, FormsModule, IonContent, IonButton, IonInput, IonIcon, IonModal, IonHeader, IonToolbar, IonTitle]
 })
 export class TimerPage implements OnInit, OnDestroy {
   totalTime = 0;
@@ -25,20 +25,20 @@ export class TimerPage implements OnInit, OnDestroy {
   minutes = 0;
   seconds = 0;
   isModalOpen = false;
-  modalHours = 0;
-  modalMinutes = 0;
-  modalSeconds = 0;
+  modalHours: number | null = null;
+  modalMinutes: number | null = null;
+  modalSeconds: number | null = null;
   private interval: any;
 
   constructor(private headerService: HeaderService) {
-    addIcons({ play, pause, refresh, stop, add, timeOutline });
+    addIcons({ play, pause, refresh, stop, add, timerOutline });
   }
 
   ngOnInit() {
     this.headerService.updateHeaderData({
       title: 'Timer',
       subtitle: 'Countdown timer',
-      image: 'timer',
+      image: 'timer-outline',
       imageType: 'icon',
       showBack: true,
       showMenu: true,
@@ -65,22 +65,45 @@ export class TimerPage implements OnInit, OnDestroy {
   }
 
   setTimerFromModal() {
-    if (this.modalHours > 0 || this.modalMinutes > 0 || this.modalSeconds > 0) {
-      this.setTimer(this.modalHours, this.modalMinutes, this.modalSeconds);
+    const hours = this.modalHours || 0;
+    const minutes = this.modalMinutes || 0;
+    const seconds = this.modalSeconds || 0;
+    if (hours > 0 || minutes > 0 || seconds > 0) {
+      this.setTimer(hours, minutes, seconds);
       this.closeModal();
     }
   }
 
   validateInput(field: string) {
     if (field === 'hours') {
-      if (this.modalHours > 23) this.modalHours = 23;
-      if (this.modalHours < 0) this.modalHours = 0;
+      this.modalHours = Math.max(0, Math.min(99, this.modalHours || 0));
     } else if (field === 'minutes') {
-      if (this.modalMinutes > 59) this.modalMinutes = 59;
-      if (this.modalMinutes < 0) this.modalMinutes = 0;
+      this.modalMinutes = Math.max(0, Math.min(59, this.modalMinutes || 0));
     } else if (field === 'seconds') {
-      if (this.modalSeconds > 59) this.modalSeconds = 59;
-      if (this.modalSeconds < 0) this.modalSeconds = 0;
+      this.modalSeconds = Math.max(0, Math.min(59, this.modalSeconds || 0));
+    }
+  }
+
+  onKeyDown(event: KeyboardEvent) {
+    if (event.key === '-' || event.key === 'e' || event.key === 'E') {
+      event.preventDefault();
+    }
+  }
+
+  onInput(event: any, field: string) {
+    let value = event.target.value;
+    if (value.length > 2) {
+      value = value.slice(0, 2);
+      event.target.value = value;
+    }
+    
+    const numValue = parseInt(value) || 0;
+    if (field === 'hours') {
+      this.modalHours = Math.min(99, numValue);
+    } else if (field === 'minutes') {
+      this.modalMinutes = Math.min(59, numValue);
+    } else if (field === 'seconds') {
+      this.modalSeconds = Math.min(59, numValue);
     }
   }
 

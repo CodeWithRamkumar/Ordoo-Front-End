@@ -24,12 +24,12 @@
         <h2 class="form-title">Create Account</h2>
         <p class="form-subtitle">Please fill in your details to sign up</p>
 
-        <form [formGroup]="signupForm" (ngSubmit)="onSignup()" class="signup-form">
+        <form [formGroup]="signupForm" (ngSubmit)="onSignup()" class="signup-form" autocomplete="off">
 
           <ion-item [class.error-item]="emailExists || signupForm.get('email')?.invalid && signupForm.get('email')?.touched">
             <ion-icon name="mail-outline" class="signup-floating-icons-left"></ion-icon>
             <ion-input class="common-input common-input-design-with-icon-left" formControlName="email" labelPlacement="floating"
-              type="email" label="Email address" fill="outline" placeholder="Enter email" mode="md"
+              type="email" label="Email address" fill="outline" placeholder="Enter email" mode="md" autocomplete="new-email"
               [class.ion-invalid]="emailExists || signupForm.get('email')?.invalid && signupForm.get('email')?.touched"
               [class.ion-touched]="emailExists || signupForm.get('email')?.touched"
               [errorText]="emailExists ? 'Email already exists' : 'Please enter a valid email'"
@@ -41,7 +41,7 @@
             <ion-icon name="lock-closed-outline" class="signup-floating-icons-left"></ion-icon>
             <ion-input class="common-input common-input-design-with-icon-left-and-right" labelPlacement="floating"
               formControlName="password" [type]="showPassword ? 'text' : 'password'" label="Password" fill="outline"
-              mode="md" placeholder="Enter password"
+              mode="md" placeholder="Enter password" autocomplete="new-password"
               [class.ion-invalid]="signupForm.get('password')?.invalid && signupForm.get('password')?.touched"
               [class.ion-touched]="signupForm.get('password')?.touched"
               errorText="Password must be at least 6 characters">
@@ -55,7 +55,7 @@
             <ion-icon name="lock-closed-outline" class="signup-floating-icons-left"></ion-icon>
             <ion-input class="common-input common-input-design-with-icon-left-and-right" labelPlacement="floating"
               formControlName="confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'" label="Confirm Password" fill="outline"
-              mode="md" placeholder="Confirm password"
+              mode="md" placeholder="Confirm password" autocomplete="new-password"
               [class.ion-invalid]="signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched"
               [class.ion-touched]="signupForm.get('confirmPassword')?.touched"
               [errorText]="signupForm.get('confirmPassword')?.hasError('passwordMismatch') ? 'Passwords must match' : 'Please confirm your password'">

@@ -92,10 +92,12 @@
                     type="number" 
                     [(ngModel)]="age" 
                     (ionInput)="calculateBMI()"
+                    (keydown)="preventMinus($event)"
                     labelPlacement="floating"
                     label="Age (years)"
                     fill="outline"
                     placeholder="Enter age"
+                    min="1"
                     mode="md">
                   </ion-input>
                 </ion-item>
@@ -108,10 +110,12 @@
                     type="number" 
                     [(ngModel)]="weight" 
                     (ionInput)="calculateBMI()"
+                    (keydown)="preventMinus($event)"
                     labelPlacement="floating"
                     [label]="'Weight ' + (unit === 'metric' ? '(kg)' : '(lbs)')"
                     fill="outline"
                     placeholder="Enter weight"
+                    min="1"
                     mode="md">
                   </ion-input>
                 </ion-item>
@@ -122,10 +126,12 @@
                     type="number" 
                     [(ngModel)]="height" 
                     (ionInput)="calculateBMI()"
+                    (keydown)="preventMinus($event)"
                     labelPlacement="floating"
                     [label]="'Height ' + (unit === 'metric' ? '(cm)' : '(ft)')"
                     fill="outline"
                     placeholder="Enter height"
+                    min="1"
                     mode="md">
                   </ion-input>
                 </ion-item>

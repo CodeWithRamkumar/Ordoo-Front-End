@@ -22,14 +22,17 @@ export class AuthService {
   }
 
   async saveUserData(userData: any) {
+    console.log(userData);
+    
     await this._storage?.set('user', userData.user);
     await this._storage?.set('profile', userData.profile);
     await this._storage?.set('token', userData.token);
     this.userDataChangedSubject.next(); // Emit change event
   }
 
-  async updateProfile(profile: any) {
-    await this._storage?.set('profile', profile);
+  async updateProfile(userData: any) {
+    await this._storage?.set('profile', userData.profile);
+    await this._storage?.set('user', userData.user);
     this.userDataChangedSubject.next(); // Emit change event
   }
 

@@ -1,32 +1,121 @@
-<ion-content class="ion-padding">
+<ion-content>
   <div class="alarm-container">
-    <div class="add-alarm">
-      <ion-item>
-        <ion-label position="stacked">Time</ion-label>
-        <ion-input type="time" [(ngModel)]="newAlarmTime"></ion-input>
-      </ion-item>
-      
-      <ion-item>
-        <ion-label position="stacked">Label</ion-label>
-        <ion-input [(ngModel)]="newAlarmLabel" placeholder="Alarm"></ion-input>
-      </ion-item>
-      
-      <ion-button color="primary" (click)="addAlarm()" [disabled]="!newAlarmTime">
-        Add Alarm
-      </ion-button>
-    </div>
+    <div class="main-layout">
+      <div class="form-section">
+        <div class="alarm-form">
+          <h2>{{ editingAlarm ? 'Edit Alarm' : 'Create Alarm' }}</h2>
+          <div class="form-row">
+            <div class="time-display">
+              <div class="time-picker-content">
+                <div class="time-wheels">
+                  <div class="wheel">
+                    <div class="wheel-label">Hour</div>
+                    <select [(ngModel)]="selectedHour" class="wheel-select" (ngModelChange)="updateTime()">
+                      @for (hour of hours; track hour) {
+                        <option [value]="hour">{{ hour }}</option>
+                      }
+                    </select>
+                  </div>
+                  
+                  <div class="wheel">
+                    <div class="wheel-label">Minute</div>
+                    <select [(ngModel)]="selectedMinute" class="wheel-select" (ngModelChange)="updateTime()">
+                      @for (minute of minutes; track minute) {
+                        <option [value]="minute">{{ minute }}</option>
+                      }
+                    </select>
+                  </div>
+                  
+                  <div class="wheel">
+                    <div class="wheel-label">Period</div>
+                    <select [(ngModel)]="selectedPeriod" class="wheel-select" (ngModelChange)="updateTime()">
+                      <option value="AM">AM</option>
+                      <option value="PM">PM</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <ion-input 
+              [(ngModel)]="newAlarm.label" 
+              placeholder="Alarm name"
+              fill="outline"
+              label="Label">
+            </ion-input>
+          </div>
 
-    <ion-list *ngIf="alarms.length > 0">
-      <ion-item *ngFor="let alarm of alarms">
-        <ion-checkbox [(ngModel)]="alarm.enabled" (ionChange)="toggleAlarm(alarm)"></ion-checkbox>
-        <ion-label class="ion-margin-start">
-          <h2>{{ alarm.time }}</h2>
-          <p>{{ alarm.label }}</p>
-        </ion-label>
-        <ion-button fill="clear" color="danger" (click)="deleteAlarm(alarm.id)">
-          Delete
-        </ion-button>
-      </ion-item>
-    </ion-list>
+          <div class="form-row">
+            <div class="days-grid">
+              @for (day of weekDays; track day.key) {
+                <button 
+                  class="day-btn" 
+                  [class.active]="isDaySelected(day.key)"
+                  (click)="toggleRepeatDay(day.key)">
+                  {{ day.label }}
+                </button>
+              }
+            </div>
+          </div>
+
+          <div class="form-row">
+            <ion-select 
+              [(ngModel)]="newAlarm.sound" 
+              fill="outline"
+              label="Sound">
+              @for (sound of sounds; track sound.value) {
+                <ion-select-option [value]="sound.value">{{ sound.label }}</ion-select-option>
+              }
+            </ion-select>
+          </div>
+          
+          <div class="form-actions">
+            @if (editingAlarm) {
+              <ion-button (click)="cancelEdit()" fill="outline" color="medium">
+                Cancel
+              </ion-button>
+            }
+            <ion-button (click)="saveAlarm()" fill="solid" color="primary">
+              {{ editingAlarm ? 'Update' : 'Save' }}
+            </ion-button>
+          </div>
+        </div>
+      </div>
+
+      <div class="alarms-section">
+        <h2>Alarms</h2>
+        @if (alarms.length === 0) {
+          <div class="empty-state">
+            <ion-icon name="alarm" class="empty-icon"></ion-icon>
+            <p>No alarms created yet</p>
+          </div>
+        } @else {
+          <div class="alarms-list">
+            @for (alarm of alarms; track alarm.id) {
+              <div class="alarm-item" [class.inactive]="!alarm.isActive">
+                <div class="alarm-info">
+                  <div class="time">{{ formatTime12Hour(alarm.time) }}</div>
+                  <div class="details">
+                    <div class="label">{{ alarm.label }}</div>
+                    <div class="repeat">{{ getRepeatText(alarm) }}</div>
+                  </div>
+                </div>
+                <div class="alarm-controls">
+                  <ion-toggle [checked]="alarm.isActive" (ionChange)="toggleAlarm(alarm)"></ion-toggle>
+                  <ion-button fill="clear" size="small" (click)="editAlarm(alarm)">
+                    <ion-icon name="pencil"></ion-icon>
+                  </ion-button>
+                  <ion-button fill="clear" size="small" color="danger" (click)="deleteAlarm(alarm.id)">
+                    <ion-icon name="trash"></ion-icon>
+                  </ion-button>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
   </div>
 </ion-content>

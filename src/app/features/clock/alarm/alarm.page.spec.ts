@@ -6,9 +6,6 @@ describe('AlarmPage', () => {
   let fixture: ComponentFixture<AlarmPage>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [AlarmPage]
-    });
     fixture = TestBed.createComponent(AlarmPage);
     component = fixture.componentInstance;
     fixture.detectChanges();

@@ -13,7 +13,7 @@
     <h2 class="form-title">Enter OTP</h2>
     <p class="form-subtitle">We've sent a 6-digit verification code to {{ email }}</p>
 
-    <form [formGroup]="otpForm" (ngSubmit)="verifyOTP()" class="otp-form">
+    <form [formGroup]="otpForm" (ngSubmit)="verifyOTP()" class="otp-form" autocomplete="off">
       <ion-input-otp 
         class="common-input"
         [length]="6" 

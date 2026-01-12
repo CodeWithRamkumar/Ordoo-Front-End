@@ -55,7 +55,7 @@
 .scrollable-content {
   flex: 1;
   overflow-y: auto;
-  padding: var(--spacing-lg);
+  padding: var(--spacing-md);
   min-height: 0;
 }
 
@@ -63,7 +63,7 @@
   max-width: 400px;
   width: 100%;
   margin: 0 auto;
-  padding: var(--spacing-xl) 0;
+  // padding: var(--spacing-xl) 0;
   min-height: calc(100vh - 2 * var(--spacing-lg));
   display: flex;
   flex-direction: column;

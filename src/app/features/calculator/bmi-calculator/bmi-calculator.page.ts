@@ -142,4 +142,10 @@ export class BmiCalculatorPage implements OnInit {
       return Math.min(75 + ((this.bmi - 30) / 10) * 25, 100);
     }
   }
+
+  preventMinus(event: KeyboardEvent) {
+    if (event.key === '-' || event.key === 'Minus') {
+      event.preventDefault();
+    }
+  }
 }

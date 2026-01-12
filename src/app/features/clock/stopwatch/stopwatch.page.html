@@ -29,14 +29,16 @@
           </div>
         </div>
 
-        <div class="laps-data" *ngIf="laps.length > 0">
-          <div class="laps-scroll">
-            <div *ngFor="let lap of laps; let i = index" class="lap-row">
-              <span class="lap-num">{{ laps.length - i }}</span>
-              <span class="lap-val">{{ lap }}</span>
+        @if (laps.length > 0) {
+          <div class="laps-data">
+            <div class="laps-scroll">
+              <div *ngFor="let lap of laps; let i = index" class="lap-row">
+                <span class="lap-num">{{ laps.length - i }}</span>
+                <span class="lap-val">{{ lap }}</span>
+              </div>
             </div>
           </div>
-        </div>
+        }
       </div>
       
       <div class="floating-buttons">

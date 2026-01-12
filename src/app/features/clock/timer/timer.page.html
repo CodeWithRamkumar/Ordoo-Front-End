@@ -47,38 +47,47 @@
                   class="common-input"
                   type="number" 
                   [(ngModel)]="modalHours" 
-                  (ionBlur)="validateInput('hours')"
+                  (ionInput)="onInput($event, 'hours')"
+                  (keydown)="onKeyDown($event)"
                   labelPlacement="floating"
                   label="Hours"
                   fill="outline"
-                  placeholder="0">
+                  placeholder="0"
+                  min="0"
+                  max="99">
                 </ion-input>
                 
                 <ion-input 
                   class="common-input"
                   type="number" 
                   [(ngModel)]="modalMinutes" 
-                  (ionBlur)="validateInput('minutes')"
+                  (ionInput)="onInput($event, 'minutes')"
+                  (keydown)="onKeyDown($event)"
                   labelPlacement="floating"
                   label="Minutes"
                   fill="outline"
-                  placeholder="0">
+                  placeholder="0"
+                  min="0"
+                  max="59">
                 </ion-input>
                 
                 <ion-input 
                   class="common-input"
                   type="number" 
                   [(ngModel)]="modalSeconds" 
-                  (ionBlur)="validateInput('seconds')"
+                  (ionInput)="onInput($event, 'seconds')"
+                  (keydown)="onKeyDown($event)"
                   labelPlacement="floating"
                   label="Seconds"
                   fill="outline"
-                  placeholder="0">
+                  placeholder="0"
+                  min="0"
+                  max="59">
                 </ion-input>
                 
                 <div class="button-group">
                   <ion-button class="btn-secondary" (click)="closeModal()">Cancel</ion-button>
-                  <ion-button class="btn-primary" fill="solid" (click)="setTimerFromModal()" [disabled]="modalHours === 0 && modalMinutes === 0 && modalSeconds === 0">Set Timer</ion-button>
+                  <ion-button class="btn-primary" fill="solid" (click)="setTimerFromModal()" [disabled]="!modalHours && !modalMinutes && !modalSeconds">Set Timer</ion-button>
                 </div>
               </ion-content>
             </ng-template>

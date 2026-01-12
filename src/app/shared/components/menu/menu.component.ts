@@ -3,6 +3,7 @@ import { IonMenu, IonHeader, IonToolbar, IonContent, IonList, IonItem, IonIcon, 
 import { home, person, logOut, search, calculator, copy, personSharp, time } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 import { AuthService } from '../../services/auth.service';
+import { LogoutService } from '../../services/logout.service';
 import { HttpClient } from '@angular/common/http';
 import { ConfigService } from '../../services/config.service';
 import { LoaderService } from '../../services/loader.service';
@@ -25,7 +26,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   showCopied = false;
   private userDataSubscription?: Subscription;
 
-  constructor(private menuCtrl: MenuController, private navCtrl: NavController, private authService: AuthService, private http: HttpClient, private config: ConfigService, private loader: LoaderService) {
+  constructor(private menuCtrl: MenuController, private navCtrl: NavController, private authService: AuthService, private logoutService: LogoutService, private http: HttpClient, private config: ConfigService, private loader: LoaderService) {
     addIcons({ home, person, search, logOut, calculator , copy, personSharp, time});
   }
 
@@ -82,20 +83,7 @@ export class MenuComponent implements OnInit, OnDestroy {
 
   async logout() {
     this.closeMenu();
-    await this.loader.show('Logging out...');
-    
-    try {
-      // Call logout API
-      await this.http.post(this.config.AUTH.LOGOUT, {}).toPromise();
-    } catch (error) {
-      console.error('Logout API error:', error);
-    } finally {
-      // Clear local data regardless of API response
-      await this.authService.clearUserData();
-      await this.loader.hide();
-      this.navCtrl.navigateRoot('/auth/login');
-     
-    }
+    await this.logoutService.logout();
   }
 
   navigateTo(route: string) {
@@ -104,7 +92,8 @@ export class MenuComponent implements OnInit, OnDestroy {
   }
 
   isActive(route: string): boolean {
-    return window.location.pathname === route;
+    const currentPath = window.location.hash.replace('#', '') || window.location.pathname;
+    return currentPath === route;
   }
 
 }

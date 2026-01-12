@@ -37,8 +37,9 @@ export class ProfileSetupPage implements OnInit, AfterViewInit, OnDestroy {
   profileForm: FormGroup;
   selectedImageUrl: string = '';
   selectedFile: File | null = null;
-  dateOfBirth: Date | null = null;
+  dob: Date | null = null;
   isDateFocused: boolean = false;
+  isSubmitting: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -52,10 +53,10 @@ export class ProfileSetupPage implements OnInit, AfterViewInit, OnDestroy {
     });
 
     this.profileForm = this.formBuilder.group({
-      fullName: ['', [Validators.required, Validators.minLength(2)]],
-      phone: ['', [Validators.required]],
+      full_name: ['', [Validators.required, Validators.minLength(2)]],
+      phone_number: ['', [Validators.required]],
       gender: ['', [Validators.required]],
-      dateOfBirth: ['', [Validators.required]],
+      dob: ['', [Validators.required]],
       bio: ['', [Validators.required,Validators.maxLength(500)]]
     });
   }
@@ -82,9 +83,9 @@ export class ProfileSetupPage implements OnInit, AfterViewInit, OnDestroy {
       container: 'body',
       orientation: 'auto'
     }).on('changeDate', (e: any) => {
-      this.dateOfBirth = e.date;
-      this.profileForm.patchValue({ dateOfBirth: e.date });
-      this.profileForm.get('dateOfBirth')?.markAsTouched();
+      this.dob = e.date;
+      this.profileForm.patchValue({ dob: e.date });
+      this.profileForm.get('dob')?.markAsTouched();
     });
   }
 
@@ -110,9 +111,12 @@ export class ProfileSetupPage implements OnInit, AfterViewInit, OnDestroy {
   }
 
   async onSubmit() {
+    if (this.isSubmitting) return;
+    
     this.profileForm.markAllAsTouched();
     
     if (this.profileForm.valid) {
+      this.isSubmitting = true;
       await this.loader.show('Setting up profile...');
       
       if (this.selectedFile) {
@@ -123,6 +127,7 @@ export class ProfileSetupPage implements OnInit, AfterViewInit, OnDestroy {
             }
           },
           error: async (error) => {
+            this.isSubmitting = false;
             await this.loader.hide();
             console.error('Upload failed:', error);
           }
@@ -136,7 +141,7 @@ export class ProfileSetupPage implements OnInit, AfterViewInit, OnDestroy {
   private async updateProfile(publicId: string) {
     const profileData = {
       ...this.profileForm.value,
-      profileImage: publicId
+      avatar_url: publicId
     };
     
     this.cloudinaryService.updateProfile(profileData).subscribe({
@@ -146,10 +151,12 @@ export class ProfileSetupPage implements OnInit, AfterViewInit, OnDestroy {
         if (response.profile) {
           await this.authService.updateProfile(response.profile);
         }
+        this.isSubmitting = false;
         await this.loader.hide();
         this.navCtrl.navigateRoot('/workspace');
       },
       error: async (error) => {
+        this.isSubmitting = false;
         await this.loader.hide();
         console.error('Profile update failed:', error);
       }
@@ -158,21 +165,21 @@ export class ProfileSetupPage implements OnInit, AfterViewInit, OnDestroy {
 
   onPhoneInput(event: any) {
     const value = event.target.value.replace(/[^0-9]/g, '');
-    const maskedValue = this.formatPhoneNumber(value);
-    this.profileForm.patchValue({ phone: maskedValue });
+    const maskedValue = this.formatIndianPhoneNumber(value);
+    this.profileForm.patchValue({ phone_number: maskedValue });
   }
 
-  formatPhoneNumber(value: string): string {
+  formatIndianPhoneNumber(value: string): string {
     if (!value) return '';
     
     const phoneNumber = value.replace(/[^\d]/g, '');
     const phoneNumberLength = phoneNumber.length;
     
-    if (phoneNumberLength < 4) return phoneNumber;
-    if (phoneNumberLength < 7) {
-      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+    if (phoneNumberLength < 6) return phoneNumber;
+    if (phoneNumberLength < 11) {
+      return `${phoneNumber.slice(0, 5)} ${phoneNumber.slice(5)}`;
     }
-    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+    return `${phoneNumber.slice(0, 5)} ${phoneNumber.slice(5, 10)}`;
   }
 
   skipSetup() {
@@ -181,19 +188,19 @@ export class ProfileSetupPage implements OnInit, AfterViewInit, OnDestroy {
 
   onDateBlur() {
     this.isDateFocused = false;
-    this.profileForm.get('dateOfBirth')?.markAsTouched();
+    this.profileForm.get('dob')?.markAsTouched();
   }
 
   // Validation state getters for date input
   get isDateTouched(): boolean {
-    return this.profileForm.get('dateOfBirth')?.touched || false;
+    return this.profileForm.get('dob')?.touched || false;
   }
 
   get isDateInvalid(): boolean {
-    return this.profileForm.get('dateOfBirth')?.invalid || false;
+    return this.profileForm.get('dob')?.invalid || false;
   }
 
   get isDateValid(): boolean {
-    return this.profileForm.get('dateOfBirth')?.valid || false;
+    return this.profileForm.get('dob')?.valid || false;
   }
 }
